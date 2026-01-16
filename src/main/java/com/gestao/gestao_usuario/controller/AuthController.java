@@ -1,5 +1,6 @@
 package com.gestao.gestao_usuario.controller;
 
+import com.gestao.gestao_usuario.dto.UserLoginRequest;
 import com.gestao.gestao_usuario.dto.UserRegisterRequest;
 import com.gestao.gestao_usuario.entity.User;
 import com.gestao.gestao_usuario.service.UserService;
@@ -25,5 +26,9 @@ public class AuthController {
 
         User user = userService.register(request);
         return ResponseEntity.ok(user);
+    }
+    @PostMapping("/login")
+    public ResponseEntity<User> login(@RequestBody @Valid UserLoginRequest request) {
+        return ResponseEntity.ok(userService.login(request));
     }
 }

@@ -1,5 +1,6 @@
 package com.gestao.gestao_usuario.service;
 
+import com.gestao.gestao_usuario.dto.UserLoginRequest;
 import com.gestao.gestao_usuario.dto.UserRegisterRequest;
 import com.gestao.gestao_usuario.entity.User;
 import com.gestao.gestao_usuario.repository.UserRepository;
@@ -29,5 +30,16 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
         return userRepository.save(user);
+    }
+    public User login(UserLoginRequest request) {
+
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new RuntimeException("Senha inválida");
+        }
+
+        return user;
     }
 }
