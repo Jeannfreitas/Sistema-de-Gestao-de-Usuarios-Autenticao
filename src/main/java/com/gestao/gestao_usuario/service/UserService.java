@@ -4,6 +4,7 @@ import com.gestao.gestao_usuario.dto.UserLoginRequest;
 import com.gestao.gestao_usuario.dto.UserRegisterRequest;
 import com.gestao.gestao_usuario.entity.User;
 import com.gestao.gestao_usuario.repository.UserRepository;
+import com.gestao.gestao_usuario.security.JwtUtil;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -31,15 +32,15 @@ public class UserService {
 
         return userRepository.save(user);
     }
-    public User login(UserLoginRequest request) {
+    public String login(String email, String password) {
 
-        User user = userRepository.findByEmail(request.getEmail())
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
-        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+        if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new RuntimeException("Senha inválida");
         }
 
-        return user;
+        return JwtUtil.generateToken(user.getEmail());
     }
 }

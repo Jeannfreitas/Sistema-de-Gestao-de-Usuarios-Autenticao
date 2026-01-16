@@ -1,5 +1,6 @@
 package com.gestao.gestao_usuario.controller;
 
+import com.gestao.gestao_usuario.dto.LoginResponse;
 import com.gestao.gestao_usuario.dto.UserLoginRequest;
 import com.gestao.gestao_usuario.dto.UserRegisterRequest;
 import com.gestao.gestao_usuario.entity.User;
@@ -28,7 +29,13 @@ public class AuthController {
         return ResponseEntity.ok(user);
     }
     @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody @Valid UserLoginRequest request) {
-        return ResponseEntity.ok(userService.login(request));
+    public ResponseEntity<LoginResponse> login(@RequestBody UserLoginRequest request) {
+
+        String token = userService.login(
+                request.getEmail(),
+                request.getPassword()
+        );
+
+        return ResponseEntity.ok(new LoginResponse(token));
     }
 }
