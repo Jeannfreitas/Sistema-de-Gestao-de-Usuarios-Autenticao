@@ -1,0 +1,29 @@
+services:
+  mysql:
+    image: mysql:8
+    container_name: mysql_gestao_usuario
+    restart: always
+    environment:
+      MYSQL_DATABASE: gestao_usuario
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  api:
+    build: .
+    container_name: api_gestao_usuario
+    restart: always
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/gestao_usuario
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      JWT_SECRET: secret-key-dev
+
+volumes:
+  mysql_data:
