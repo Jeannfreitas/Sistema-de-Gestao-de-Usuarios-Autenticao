@@ -30,5 +30,7 @@ Este projeto tem como objetivo aplicar conceitos fundamentais de desenvolvimento
 - **Java**
 - **Spring Boot**
 - **Docker**
+- **MYSQL**
+
 
 ---
